@@ -44,9 +44,9 @@ def get_production_model():
 
 try:
     print("Loading AI Brain into memory...")
-    production_model = tf.keras.models.load_model(MODEL_PATH)
+    production_model = tf.keras.models.load_model(model_path)
 except Exception as e:
-    print(f"⚠️ Warning: Could not load model at {MODEL_PATH}. Error: {e}")
+    print(f"⚠️ Warning: Could not load model at {model_path}. Error: {e}")
     production_model = None
 
 class_labels = ['maize_blight', 'maize_healthy', 'maize_rust', 'maize_streak_virus', 'not_maize']
