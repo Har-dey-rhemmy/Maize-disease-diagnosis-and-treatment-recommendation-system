@@ -1,7 +1,6 @@
 import os
 import numpy as np
 from PIL import Image, ImageOps
-import tensorflow as tf
 
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
@@ -31,13 +30,17 @@ from .serializers import LeafScanSerializer
 # 1. GLOBAL AI MODEL SETUP
 MODEL = None
 
-def get_model():
-    global MODEL
-    if MODEL is None:
-        import tensorflow as tf
+def get_production_model():
+    """Imports TensorFlow and loads the model only when a scan is requested."""
+    global production_model
+    if production_model is None:
+        import tensorflow as tf  # Imported lazily to prevent worker timeout/SIGKILL on startup
         model_path = os.path.join(settings.BASE_DIR, 'maize_diseasesss_mobilenetv3.keras')
-        MODEL = tf.keras.models.load_model(model_path)
-    return MODEL
+        if os.path.exists(model_path):
+            production_model = tf.keras.models.load_model(model_path)
+        else:
+            print(f"Model file not found at: {model_path}")
+    return production_model
 
 try:
     print("Loading AI Brain into memory...")
