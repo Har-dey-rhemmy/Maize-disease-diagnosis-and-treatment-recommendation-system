@@ -20,12 +20,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-dgf$n&4)*23l@+qxto*ee3&tc^hl23rax78guoroq89(*0yo8)'
+# Read SECRET_KEY from environment, with a local fallback
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-dgf$n&4)*23l@+qxto*ee3&tc^hl23rax78guoroq89(*0yo8)')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Set DEBUG to False in production unless explicitly set to True
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', '.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -145,10 +146,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'aderemiuthman7000@gmail.com'
-EMAIL_HOST_PASSWORD = 'ovznfhavdqosglyy'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 CORS_ALLOWED_ORIGINS = [
+    'https://*.onrender.com',
     "http://127.0.0.1:5500",
     "http://localhost:5500",
     "http://127.0.0.1:8000",
