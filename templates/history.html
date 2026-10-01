@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan History | MaizeHealth</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .history-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .history-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid #eee;
+            transition: transform 0.2s;
+        }
+        .history-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .history-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 3px solid var(--primary-green);
+        }
+        .history-details {
+            padding: 1.2rem;
+        }
+        .history-disease {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-slate);
+            margin-bottom: 0.5rem;
+        }
+        .history-meta {
+            font-size: 0.85rem;
+            color: #666;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .confidence-badge {
+            background: #e8f5e9;
+            color: var(--primary-green);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 4rem 0;
+            color: #888;
+        }
+        .empty-state i {
+            font-size: 4rem;
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-seedling"></i>
+            <span>MaizeHealth</span>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'home' %}" class="nav-btn secondary-btn"><i class="fa-solid fa-camera"></i> New Scan</a>
+        </div>
+    </header>
+
+    <main class="history-container">
+        <div class="history-header">
+            <h2 style="color: var(--dark-slate);"><i class="fa-solid fa-clock-rotate-left"></i> Your Scan History</h2>
+        </div>
+
+        <div id="historyGrid" class="history-grid">
+            <div class="empty-state">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <p>Loading your history...</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static 'history.js' %}"></script>
+</body>
+</html>

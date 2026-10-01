@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings | MaizeHealth</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'auths.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel = "stylesheet" href="{% static 'settings.css' %}"> 
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-seedling"></i>
+            <span>MaizeHealth</span>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'home' %}" class="nav-btn secondary-btn"><i class="fa-solid fa-camera"></i> Back to Scanner</a>
+        </div>
+    </header>
+
+    <main class="settings-container">
+        <h2 class="settings-header"><i class="fa-solid fa-gear"></i> Account Settings</h2>
+
+        <div class="settings-card">
+            <h3>Profile Information</h3>
+            <form id="profileForm" class="auth-form" style="display: block;">
+                
+                <div class="input-group">
+                    <label>Email Address (Cannot be changed)</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-envelope input-icon"></i>
+                        <input type="email" id="set-email" class="readonly-input" readonly>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-user input-icon"></i>
+                        <input type="text" id="set-name" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Username</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-at input-icon"></i>
+                        <input type="text" id="set-username" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="updateProfileBtn">Save Changes</button>
+            </form>
+        </div>
+
+        <div class="settings-card">
+            <h3><i class="fa-solid fa-shield-halved"></i> Security & Password</h3>
+            <form id="passwordForm" class="auth-form" style="display: block;">
+                
+                <div class="input-group">
+                    <label>Current Password</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock-open input-icon"></i>
+                        <input type="password" id="set-old-password" placeholder="Enter current password" required>
+                        <i class="fa-solid fa-eye password-toggle-icon"></i>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>New Password</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="set-new-password" placeholder="Create new strong password" required>
+                        <i class="fa-solid fa-eye password-toggle-icon"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="updatePasswordBtn" style="background: var(--dark-slate);">Update Password</button>
+            </form>
+        </div>
+        <!-- Danger Zone Section -->
+        <div class="settings-section danger-zone" style="margin-top: 40px; padding: 20px; border: 1px solid #dc3545; border-radius: 8px; background-color: #fff8f8;">
+            <h3 style="color: #dc3545; margin-top: 0;"><i class="fa-solid fa-triangle-exclamation"></i> Danger Zone</h3>
+            <p style="color: #555; margin-bottom: 15px;">
+                Once you delete your account, there is no going back. All of your saved scan history and profile data will be permanently erased.
+            </p>
+            <button id="deleteAccountBtn" type="button" style="background-color: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 1rem;">
+                Delete Account
+            </button>
+        </div>
+    </main>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="{% static 'settings.js' %}"></script>
+    <!-- Custom Delete Confirmation Modal -->
+    <div id="deleteConfirmModal" class="custom-modal-overlay" style="display: none;">
+        <div class="custom-modal-card">
+            <div class="modal-icon-warning">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3>Delete Account?</h3>
+            <p>Are you absolutely sure you want to delete your account? This action cannot be undone and all your scan history will be permanently lost.</p>
+            <div class="modal-actions">
+                <button id="cancelDeleteBtn" class="btn-cancel">Cancel</button>
+                <button id="confirmDeleteBtn" class="btn-danger">Yes, Delete My Account</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

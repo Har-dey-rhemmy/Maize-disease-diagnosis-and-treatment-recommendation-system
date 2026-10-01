@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maize Health</title>
+    
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        #imagePreview { max-width: 100%; max-height: 300px; border-radius: 8px; margin-bottom: 15px; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-seedling"></i>
+            <span>MaizeHealth</span>
+        </div>
+        
+        <div class="auth-buttons">
+            <a href="{% url 'auth_page' %}?mode=login" class="nav-btn login-btn">Login</a>
+            <a href="{% url 'auth_page' %}?mode=register" class="nav-btn register-btn">Register</a>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <section class="intro-text">
+            <h1>Check Your Maize Crop</h1>
+            <p>Upload a clear photo of the affected maize leaf to instantly detect diseases and get treatment steps.</p>
+        </section>
+
+        <div class="disclaimer-box">
+            <i class="fa-solid fa-circle-info info-icon"></i>
+            <p>
+                <strong>Supported Analysis:</strong> This system currently detects 
+                <span>Northern Corn Leaf Blight</span>, 
+                <span>Maize Streak Virus</span> and
+                <span>Common Rust</span>.
+            </p>
+        </div>
+
+        <form id="scanForm" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="upload-card">
+                
+                <!-- UPDATED DROP ZONE -->
+                <!-- UPDATED DROP ZONE: Side-by-Side Layout -->
+                <div class="drop-zone" id="dropZone" style="border: 2px dashed #ccc; padding: 40px 20px; text-align: center; border-radius: 12px; background-color: #fcfcfc; transition: all 0.3s ease;">
+                    <i class="fa-solid fa-cloud-arrow-up upload-icon" style="font-size: 3rem; color: #2e7d32; margin-bottom: 15px;"></i>
+    
+                    <p class="drop-zone-text" style="font-size: 1.1rem; color: #555; margin-bottom: 20px;">
+                        Drag & drop your leaf image here
+                    </p>
+    
+                    <!-- Flex Container for Side-by-Side Buttons -->
+                    <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+        
+                        <!-- Browse Files Button -->
+                        <button type="button" id="browseButton" style="background-color: white; color: #333; padding: 12px 20px; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s;">
+                            <i class="fa-regular fa-folder-open"></i> Browse Files
+                        </button>
+
+                        <!-- Camera Button -->
+                        <button type="button" id="cameraButton" style="background-color: #2e7d32; color: white; padding: 12px 20px; font-size: 1rem; border: none; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                            <i class="fa-solid fa-camera"></i> Take Picture
+                        </button>
+        
+                    </div>
+
+                    <!-- Hidden Inputs -->
+                    <input type="file" id="fileInput" name="image" accept="image/*" hidden required>
+                    <input type="file" id="cameraInput" accept="image/*" capture="environment" hidden>
+                </div>
+                
+                <div class="preview-container text-center" id="previewContainer" style="display: none; padding: 20px;">
+                    <img id="imagePreview" src="" alt="Maize leaf preview">
+                    <br>
+                    <div style="display: flex; justify-content: center; gap: 15px; margin-top: 15px;">
+                        <button type="submit" class="analyze-btn" id="analyzeBtn" style="padding: 10px 20px; font-size: 1.1rem; cursor: pointer;">
+                            <i class="fa-solid fa-microscope"></i> <span id="btnText">Analyze Crop Health</span>
+                        </button>
+                        
+                        <button type="button" id="removeFileBtn" class="remove-btn">
+                            <i class="fa-solid fa-trash-can"></i> Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <div class="modal-overlay" id="resultModal">
+        <div class="modal-card" style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%;">
+            <div class="modal-header" style="display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                <h2 style="margin: 0;"><i class="fa-solid fa-square-poll-horizontal"></i> Analysis Result</h2>
+                <button class="close-modal" id="closeModal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </div>
+            
+            <div class="modal-body" style="padding: 20px 0;">
+                <div class="diagnosis-badge" style="font-size: 1.2rem; margin-bottom: 10px;">
+                    <span class="label">Detected Condition: </span>
+                    <strong class="disease-name" id="modalDiseaseName">Loading...</strong>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <span>AI Confidence: <strong id="modalConfidence"></strong>%</span> | 
+                    <span>Threat Level: <strong id="modalThreatLevel"></strong></span>
+                </div>
+
+                <div class="recommendation-section">
+                    <h3 style="margin-bottom: 10px;"><i class="fa-solid fa-kit-medical"></i> Symptoms:</h3>
+                    <p style="color: #555;" id="modalSymptoms"></p>
+
+                    <h3 style="margin-top: 20px; margin-bottom: 10px;"><i class="fa-solid fa-prescription-bottle-medical"></i> Treatment Steps:</h3>
+                    <div style="background: #e9f7ef; padding: 15px; border-left: 4px solid #198754; border-radius: 4px;" id="modalTreatment">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer" style="text-align: right; padding-top: 15px; border-top: 1px solid #eee;">
+                <button type="button" id="resetBtn" class="secondary-btn" style="padding: 10px 20px; background: #333; color: white; border-radius: 5px; cursor: pointer;">Scan Another Leaf</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'script.js' %}"></script>
+</body>
+</html>

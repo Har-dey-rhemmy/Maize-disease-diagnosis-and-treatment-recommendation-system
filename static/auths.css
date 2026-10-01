@@ -1,0 +1,460 @@
+/* Auth Layout Configuration */
+.auth-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+    background-color: var(--background-gray);
+}
+
+.auth-card {
+    background: var(--white);
+    width: 100%;
+    max-width: 480px;
+    border-radius: 12px;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.06);
+    padding: 2.5rem 2rem;
+}
+
+/* Nav Link customization */
+.back-home-link {
+    color: var(--dark-slate);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s;
+}
+
+.back-home-link:hover {
+    color: var(--primary-green);
+}
+
+.auth-tabs {
+    display: flex;
+    position: relative;
+    border-bottom: 2px solid #f1f3f4;
+    margin-bottom: 2rem;
+}
+
+.tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 1rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    border-bottom: none !important; 
+}
+
+.tab-btn.active {
+    color: var(--primary-green);
+}
+
+/* The Sliding Green Line */
+.tab-slider {
+    position: absolute;
+    bottom: -2px; /* Pulls it down to overlap the light gray track */
+    left: 0;
+    width: 50%;
+    height: 3px;
+    background-color: var(--primary-green);
+    /* Using the same smooth curve as your form slide animation! */
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* When the container has this class, the slider glides 100% of its own width to the right */
+.auth-tabs.right-active .tab-slider {
+    transform: translateX(100%);
+}
+
+/* Quick/Automatic Auth Elements */
+.section-subtitle {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #777;
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.5px;
+}
+
+.social-auth-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.quick-auth-btn {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    background-color: var(--white);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.quick-auth-btn.automatic-email {
+    background-color: var(--light-green);
+    border-color: #a5d6a7;
+    color: var(--primary-green);
+}
+
+.quick-auth-btn.automatic-email:hover {
+    background-color: #c8e6c9;
+}
+
+.quick-auth-btn.google-auth:hover {
+    background-color: #f5f5f5;
+}
+
+/* Form Divider Layout */
+.divider {
+    text-align: center;
+    margin: 1.5rem 0;
+    position: relative;
+}
+
+.divider::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px;
+    background-color: #ddd;
+    z-index: 1;
+}
+
+.divider span {
+    background-color: var(--white);
+    padding: 0 10px;
+    color: #888;
+    font-size: 0.85rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* Form Input Configurations */
+.auth-form {
+    display: none;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.auth-form.active {
+    display: flex;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.input-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--dark-slate);
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 12px;
+    color: #888;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input-wrapper input:focus {
+    border-color: var(--primary-green);
+}
+
+/* Actions panel area */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    cursor: pointer;
+}
+
+.forgot-pass {
+    color: var(--primary-green);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* Submission Action Buttons */
+.submit-btn {
+    background-color: var(--primary-green);
+    color: var(--white);
+    border: none;
+    padding: 0.9rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+    background-color: #1b5e20;
+}
+
+.submit-btn.register-theme-btn {
+    background-color: var(--dark-slate);
+}
+
+.submit-btn.register-theme-btn:hover {
+    background-color: #1a252f;
+}
+/* MOBILE RESPONSIVENESS (Screens under 768px) */
+@media (max-width: 768px) {
+    /* Navbar stacking */
+    .navbar {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    .auth-buttons {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Main Container & Typography */
+    .intro-text h1 {
+        font-size: 1.8rem;
+    }
+
+    .intro-text p {
+        font-size: 1rem;
+        padding: 0 10px;
+    }
+
+    /* Upload & Auth Cards */
+    .upload-card, .auth-card {
+        padding: 1.5rem 1rem;
+        width: 95%;
+    }
+
+    .drop-zone {
+        padding: 2rem 0.5rem;
+    }
+
+    /* Make buttons full width for easy tapping */
+    .nav-btn, .submit-btn, .secondary-btn, .analyze-btn {
+        width: 100%;
+        text-align: center;
+        padding: 1rem;
+    }
+
+    /* Modals */
+    .modal-card {
+        width: 95%;
+        margin: 10px;
+    }
+}
+
+/* PASSWORD STRENGTH CHECKER UI */
+.password-rules {
+    list-style: none;
+    padding: 0;
+    margin: 0.8rem 0 0 0.2rem;
+    font-size: 0.85rem;
+}
+
+.password-rules li {
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+/* Default state (invalid) */
+.password-rules li.invalid {
+    color: #888; /* Soft gray */
+}
+
+.password-rules li.invalid i {
+    color: #d32f2f; /* Red X */
+}
+
+/* Success state (valid) */
+.password-rules li.valid {
+    color: var(--primary-green);
+}
+
+.password-rules li.valid i {
+    color: var(--primary-green); /* Green Check */
+}
+
+/* CUSTOM TOAST NOTIFICATIONS */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 280px;
+    max-width: 350px;
+    padding: 16px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    font-size: 0.95rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    
+    /* Animation defaults */
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Class added by JS to trigger animation */
+.toast.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+/* Themes */
+.toast.success {
+    background-color: var(--primary-green, #2e7d32);
+    border-left: 5px solid #1b5e20;
+}
+
+.toast.error {
+    background-color: #d32f2f;
+    border-left: 5px solid #b71c1c;
+}
+
+.toast.warning {
+    background-color: #f57c00;
+    border-left: 5px solid #e65100;
+}
+
+.toast i {
+    font-size: 1.2rem;
+}
+
+/* LOGIN FORM ACTIONS (Remember Me / Forgot Pass) */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;            
+    margin-bottom: 1.2rem;
+    margin-top: 0.5rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    color: var(--dark-slate);
+    cursor: pointer;
+}
+
+.forgot-pass-link {
+    color: var(--primary-green);
+    font-size: 0.85rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.forgot-pass-link:hover {
+    text-decoration: underline;
+    color: #1b5e20;
+}
+
+input::-ms-reveal,
+input::-ms-clear {
+    display: none;
+}
+
+.password-toggle-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
+    transition: color 0.3s ease;
+    z-index: 10;
+    font-size: 1.1rem;
+}
+
+.password-toggle-icon:hover {
+    color: var(--primary-green);
+}
+
+.input-wrapper input[type="password"],
+.input-wrapper input.password-visible {
+    padding-right: 45px;
+}
+
+.auth-form {
+    display: none;
+}
+
+.auth-form.active {
+    display: block;
+    animation: slideInSmooth 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes slideInSmooth {
+    0% {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

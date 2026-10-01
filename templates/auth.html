@@ -1,0 +1,228 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access MaizeHealth Portal</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'auths.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-seedling"></i>
+            <span>MaizeHealth</span>
+        </div>
+        <a href="{% url 'home' %}" class="back-home-link"><i class="fa-solid fa-arrow-left"></i> Back to Scanner</a>
+    </header>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            
+            <div id="g_id_onload"
+                 data-client_id="1089267397562-j3l493j8iu4137980ukg8q62gv8s9ja7.apps.googleusercontent.com"
+                 data-context="use"
+                 data-ux_mode="popup"
+                 data-callback="handleGoogleLogin"
+                 data-auto_prompt="false">
+            </div>
+
+            <div class="auth-tabs">
+                <button class="tab-btn active" id="loginTab">Sign In</button>
+                <button class="tab-btn" id="registerTab">Create Account</button>
+                
+                <div class="tab-slider"></div>
+            </div>
+
+            <form id="loginForm" class="auth-form active">
+                <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="rectangular"
+                         data-theme="outline"
+                         data-text="signin_with"
+                         data-size="large"
+                         data-width="300"
+                         data-logo_alignment="left">
+                    </div>
+                </div>
+                
+                <div style="text-align: center; color: #888; margin-bottom: 1rem; font-size: 0.85rem;">
+                    — OR CONTINUE WITH EMAIL —
+                </div>
+                <div class="input-group">
+                    <label for="loginEmail">Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-envelope input-icon"></i>
+                        <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="loginPassword">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                        <i class="fa-solid fa-eye password-toggle-icon"></i>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <label class="remember-me">
+                        <input type="checkbox"> Remember me
+                    </label>
+                    <a href="#" id="showForgotPassword" class="forgot-pass-link">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="submit-btn">Sign In</button>
+            </form>
+
+            <form id="registerForm" class="auth-form">
+                <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="rectangular"
+                         data-theme="outline"
+                         data-text="signup_with"
+                         data-size="large"
+                         data-width="300"
+                         data-logo_alignment="left">
+                    </div>
+                </div>
+                
+                <div style="text-align: center; color: #888; margin-bottom: 1rem; font-size: 0.85rem;">
+                    — OR REGISTER WITH EMAIL —
+                </div>
+                <div class="input-group">
+                    <label for="regName">Full Name</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-user input-icon"></i>
+                        <input type="text" id="regName" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="regUsername">Username</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-at input-icon"></i>
+                        <input type="text" id="regUsername" required>
+                    </div>
+                    <small id="usernameWarning" style="color: #d32f2f; display: none; margin-top: 5px; font-weight: bold;"><i class="fa-solid fa-circle-exclamation"></i> Username is already taken.</small>
+                </div>
+
+                <div class="input-group">
+                    <label for="regEmail">Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-envelope input-icon"></i>
+                        <input type="email" id="regEmail" placeholder="Email address" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required>
+                    </div>
+                    <small id="emailWarning" style="color: #d32f2f; display: none; margin-top: 5px; font-weight: bold;"><i class="fa-solid fa-circle-exclamation"></i> Email is already registered.</small>
+                </div>
+
+                <div class="input-group">
+                    <label for="regPassword">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="regPassword" placeholder="Create strong password" required>
+                        <i class="fa-solid fa-eye password-toggle-icon"></i>
+                    </div>
+                    
+                    <ul class="password-rules" id="passwordRules">
+                        <li id="ruleLength" class="invalid"><i class="fa-solid fa-circle-xmark"></i> At least 8 characters</li>
+                        <li id="ruleNumber" class="invalid"><i class="fa-solid fa-circle-xmark"></i> At least 1 number</li>
+                        <li id="ruleSpecial" class="invalid"><i class="fa-solid fa-circle-xmark"></i> At least 1 special character</li>
+                    </ul>
+                </div>
+
+                <button type="submit" class="submit-btn">Register Account</button>
+            </form>
+
+            <form id="otpForm" class="auth-form">
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <i class="fa-solid fa-envelope-circle-check" style="font-size: 3rem; color: var(--primary-green); margin-bottom: 1rem;"></i>
+                    <h3 style="color: var(--dark-slate); margin-bottom: 0.5rem;">Check Your Email</h3>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem;">We sent a 6-digit code to <br><strong id="displayOtpEmail" style="color: var(--primary-green);"></strong></p>
+                    
+                    <p style="color: #888; font-size: 0.8rem; margin: 0.8rem 0 0 0; background: #f8f9fa; padding: 0.5rem; border-radius: 6px; border: 1px dashed #ccc; display: inline-block;">
+                        <i class="fa-solid fa-circle-info" style="color: #f57c00;"></i> Didn't receive it? Please check your <strong>Spam</strong> or <strong>Junk</strong> folder.
+                    </p>
+                </div>
+
+                <div class="input-group">
+                    <label for="otpInput">Enter 6-Digit Code</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-key input-icon"></i>
+                        <input type="text" id="otpInput" pattern="\d{6}" maxlength="6" style="text-align: center; font-size: 1.2rem; letter-spacing: 5px; font-weight: bold;" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" style="margin-top: 1rem;">Verify Account</button>
+                
+                <div style="text-align: center; margin-top: 1rem;">
+                    <a href="#" id="backToLogin" style="color: #888; font-size: 0.85rem; text-decoration: none;">&larr; Back to Login</a>
+                </div>
+            </form>
+
+            <form id="forgotPasswordForm" class="auth-form">
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <i class="fa-solid fa-lock-open" style="font-size: 3rem; color: var(--primary-green); margin-bottom: 1rem;"></i>
+                    <h3 style="color: var(--dark-slate); margin-bottom: 0.5rem;">Reset Password</h3>
+                    <p style="color: #666; font-size: 0.9rem;">Enter your registered email address and we'll send you a 6-digit recovery code.</p>
+                </div>
+
+                <div class="input-group">
+                    <label for="forgotEmail">Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-envelope input-icon"></i>
+                        <input type="email" id="forgotEmail" placeholder="name@example.com" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" style="margin-top: 1rem;">Send Recovery Code</button>
+                <div style="text-align: center; margin-top: 1rem;">
+                    <a href="#" id="backToLoginFromForgot" style="color: #888; font-size: 0.85rem; text-decoration: none;">&larr; Back to Login</a>
+                </div>
+            </form>
+
+            <form id="resetPasswordForm" class="auth-form">
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <h3 style="color: var(--dark-slate); margin-bottom: 0.5rem;">Create New Password</h3>
+                    <p style="color: #666; font-size: 0.9rem;">Enter the 6-digit code sent to <strong id="displayResetEmail" style="color: var(--primary-green);"></strong></p>
+                </div>
+
+                <div class="input-group">
+                    <label for="resetOtpInput">6-Digit Code</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-key input-icon"></i>
+                        <input type="text" id="resetOtpInput" placeholder="123456" pattern="\d{6}" maxlength="6" style="text-align: center; font-size: 1.2rem; letter-spacing: 5px; font-weight: bold;" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="newPassword">New Password</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="newPassword" placeholder="Create strong password" required>
+                        <i class="fa-solid fa-eye password-toggle-icon"></i>
+                    </div>
+                    
+                    <ul class="password-rules" id="resetPasswordRules">
+                        <li id="resetRuleLength" class="invalid"><i class="fa-solid fa-circle-xmark"></i> At least 8 characters</li>
+                        <li id="resetRuleNumber" class="invalid"><i class="fa-solid fa-circle-xmark"></i> At least 1 number</li>
+                        <li id="resetRuleSpecial" class="invalid"><i class="fa-solid fa-circle-xmark"></i> At least 1 special character</li>
+                    </ul>
+                </div>
+
+                <button type="submit" class="submit-btn" style="margin-top: 1rem;">Save New Password</button>
+            </form>
+
+        </div>
+    </div>
+    <div id="toastContainer" class="toast-container"></div>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="{% static 'authss.js' %}"></script>
+</body>
+</html>
