@@ -29,7 +29,15 @@ from .serializers import LeafScanSerializer
 
 
 # 1. GLOBAL AI MODEL SETUP
-MODEL_PATH = os.path.join(settings.BASE_DIR, 'maize_diseasesss_mobilenetv3.keras')
+MODEL = None
+
+def get_model():
+    global MODEL
+    if MODEL is None:
+        import tensorflow as tf
+        model_path = os.path.join(settings.BASE_DIR, 'maize_diseasesss_mobilenetv3.keras')
+        MODEL = tf.keras.models.load_model(model_path)
+    return MODEL
 
 try:
     print("Loading AI Brain into memory...")
@@ -232,9 +240,32 @@ class VerifyOTPView(APIView):
             return Response({"error": "User or OTP not found."}, status=status.HTTP_404_NOT_FOUND)
 
 # 3. THE AI INTEGRATION (SCAN LEAF)
+import os
+from django.conf import settings
+from PIL import Image, ImageOps
+import numpy as np
+from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.response import Response
+from rest_framework import status
+
+# Model cache variable (starts as None so Gunicorn boots without loading it)
+production_model = None
+
+def get_production_model():
+    """Lazy-loads the Keras model into memory on the first scan request."""
+    global production_model
+    if production_model is None:
+        import tensorflow as tf
+        model_path = os.path.join(settings.BASE_DIR, 'maize_diseasesss_mobilenetv3.keras')
+        if os.path.exists(model_path):
+            production_model = tf.keras.models.load_model(model_path)
+    return production_model
+
+
 class ScanLeafView(APIView):
-    #authentication_classes = [TokenAuthentication]
-    #permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request, *args, **kwargs):
@@ -245,8 +276,14 @@ class ScanLeafView(APIView):
                 user=request.user if request.user.is_authenticated else None
             )
 
-            if production_model is None:
-                return Response({"error": "AI Model is currently offline."}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            # Retrieve or initialize the model on demand
+            model = get_production_model()
+
+            if model is None:
+                return Response(
+                    {"error": "AI Model is currently offline or file not found."},
+                    status=status.HTTP_503_SERVICE_UNAVAILABLE
+                )
 
             try:
                 img = Image.open(scan_instance.image.path)
@@ -257,7 +294,7 @@ class ScanLeafView(APIView):
                 img_array = np.array(img).astype('float32')
                 img_array = np.expand_dims(img_array, axis=0)
 
-                predictions = production_model.predict(img_array, verbose=0)
+                predictions = model.predict(img_array, verbose=0)
                 probs = predictions[0]
                 winning_index = int(np.argmax(probs))
 
@@ -269,6 +306,8 @@ class ScanLeafView(APIView):
                     predicted_class = 'not_maize'
 
                 report = treatment_database.get(predicted_class)
+                if not report:
+                    report = treatment_database.get('not_maize')
 
                 disease, created = DiseaseCondition.objects.get_or_create(
                     name=report['name'],
@@ -300,7 +339,10 @@ class ScanLeafView(APIView):
                 }, status=status.HTTP_201_CREATED)
 
             except Exception as e:
-                return Response({"error": f"Image processing failed: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response(
+                    {"error": f"Image processing failed: {str(e)}"},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
 
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
